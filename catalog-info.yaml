@@ -1,0 +1,95 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: dan-devops-svc
+  description: >
+    The DevOps service is a core ME platform backend service that is responsible 
+    for provisioning data storage (e.g. blob object store or databases) and secrets management within the relevant 
+    cloud platform when onboarding/updating a client.
+    In addition to provisioning activities, this service, for the tenant group it is active within, manages the credential 
+    management process for applications it is responsible for provisioning (e.g. client tenanted applications).
+  tags:
+    - typescript
+    - nodejs
+    - mongodb
+    - mongoose
+    - docker
+    - azure
+    - helm
+    - kubernetes
+  links:
+    - title: Integration Testing
+      url: http://enablers01-int-g1ms-dan-devops-svc.enablers01-int-g1ms.svc.cluster.local
+    - title: Nonfunctional Testing
+      url: http://enablers01-nft-g1ms-dan-devops-svc.enablers01-nft-g1ms.svc.cluster.local
+    - title: Staging Environment
+      url: http://enablers01-stg-g1ms-dan-devops-svc.enablers01-stg-g1ms.svc.cluster.local
+    - title: User Acceptance Testing
+      url: http://enablers01-demo-g1ms-dan-devops-svc.enablers01-demo-g1ms.svc.cluster.local
+    - title: Production
+      url: http://enablers01-prod-g1ms-dan-devops-svc.enablers01-prod-g1ms.svc.cluster.local
+  annotations:
+    github.com/project-slug: gdo-enablers/dan-devops-svc
+    backstage.io/code-coverage: enabled
+    backstage.io/techdocs-ref: dir:.
+    sonarqube.org/project-key: gdo-enablers-dan-devops-svc
+spec:
+  type: service
+  lifecycle: production
+  owner: dc.eng.Framework
+  system: dc.tenant-manager
+  dependsOn: ['api:dan-ref-data-svc-me']
+  apiConsumedBy: ['component:dan-gov-svr-me']
+  consumesApis:
+    - api:dan-devops-svc
+  providesApis:
+    - api:dan-devops-svc
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: dan-devops-svc
+  description: Devops service API
+  links:
+    - url: https://github.com/gdo-enablers/dan-devops-svc
+      title: GitHub Repo
+      icon: github
+spec:
+  type: openapi
+  lifecycle: production
+  system: dc.tenant-manager
+  owner: dc.eng.Framework
+  definition: |
+    basePath: "/api"
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: dan-reference-data-svc-me-db
+  description: MongoDB client service details
+spec:
+  type: database
+  owner: dc.eng.Framework
+  system: DenstuConnect
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-group
+apiVersion: backstage.io/v1alpha1
+kind: Group
+metadata:
+  name: dc.devops.Denodo
+  description: DevOps team
+spec:
+  type: team
+  profile:
+    displayName: Dentsu DevOps
+    picture: https://example.com/groups/bu-infrastructure.jpeg
+  children: []
+  members: [Raman.Kumar]
+---
+# https://backstage.io/docs/features/software-catalog/descriptor-format#kind-user
+apiVersion: backstage.io/v1alpha1
+kind: User
+metadata:
+  name: Raman.Kumar
+spec:
+  memberOf: [dc.devops.Denodo]
